@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+	int deret[10];
+	int i;
+	for (i = 0; i <= 9; i++)
+	{
+		deret[i] = 2 * i +1 ;
+	}
+	cout << "Deret bilangan ganjil :  ";
+	for (i = 0; i <= 9; i++)
+		cout << deret[i] << "  ";
+}
