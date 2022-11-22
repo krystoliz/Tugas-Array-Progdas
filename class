@@ -1,0 +1,84 @@
+#include<iostream>
+using namespace std;
+
+class romanTypedec {
+    int decimal; //stores the decimal number after converting
+    char R[8]; //intialized by the constructor    
+public:
+    romanTypedec(); //constructor
+    void RtoD(); //declaration of a function to convert roman into decimal
+    int get_decimal();//declaration of a function to get decimal number
+    bool operator>=(int);//operator overloading
+
+};
+int main()
+{
+    romanTypedec ob; //creating the object
+    ob.RtoD(); //calling the function of R2D
+
+    if (ob >= 0)
+        cout << "Decimal : " << ob.get_decimal() << endl;
+    else
+        cout << "Invalid Format of a number" << endl;
+
+}
+void romanTypedec::RtoD()
+{
+    char a[10];
+    cout << "Enter the number in roman format (M-D-C-L-X-V-I) :";
+    cin >> a; //misal X
+    int dec, l, n = 0;
+    l = strlen(a); //strlen() is used to calculate the length of char string
+    for (int i = l - 1; i >= 0; i--) //calculate from roman to decimal format and cehcking the char of the string one-by-one from the last char in the string
+    {
+        a[i] = toupper(a[i]);     //a[1]=C      a0=X                                                                        
+        if (a[i] == R[0])
+            dec = 1000;
+        else if (a[i] == R[1])
+            dec = 500;
+        else if (a[i] == R[2])//dec=100
+            dec = 100;
+        else if (a[i] == R[3])
+            dec = 50;
+        else if (a[i] == R[4])
+            dec = 10; // dec = 10 //loncat ke if yang di bawah
+        else if (a[i] == R[5])
+            dec = 5;
+        else if (a[i] == R[6])
+            dec = 1;
+        else
+        {
+            decimal = -1;
+            break;
+        }
+        if (n > dec) //n=0 0>100 salah //n=100 100>10 bnear
+            decimal = (decimal - dec); //decimal=100-10-90
+        else
+            decimal = decimal + dec; //decimal =0 0+100= decimal
+        n = dec; //n= 100
+    }
+}
+int romanTypedec::get_decimal() //function to return the decmial number
+{
+    return decimal;
+}
+romanTypedec::romanTypedec()//Constructor
+{
+    R[0] = 'M';
+    R[1] = 'D';
+    R[2] = 'C';
+    R[3] = 'L';
+    R[4] = 'X';
+    R[5] = 'V';
+    R[6] = 'I';
+
+    decimal = 0;
+}
+
+bool romanTypedec::operator >=(int n)
+{
+    if (decimal >= 0)
+        return 1;
+    else
+        return 0;
+}
