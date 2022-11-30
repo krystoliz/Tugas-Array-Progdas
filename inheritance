@@ -1,0 +1,255 @@
+#include <iostream>
+using namespace std;
+
+class bankAccount
+{
+	//property
+public:
+	int accNumber;
+	double balance;
+
+	//constructor
+public :
+	bankAccount(int accnum, double bal)
+	{
+		accNumber = accnum;
+		balance = bal;
+	}
+
+	//methods
+public: 
+	double retrieveBalance()
+	{
+		return balance;
+	}
+	int retrieveAccNumber()
+	{
+		return accNumber;
+	}
+	void setBalance(double amount)
+	{
+		balance = amount;
+	}
+	void setAccNumber(int accnum)
+	{
+		accNumber = accnum;
+	}
+	void showAccInfo()
+	{
+		cout << "Your account number	: " << accNumber << "\n";
+		cout << "Your account balance	: " << balance << "\n";
+	}
+	double depoAmount(double depoAmount)
+	{
+		balance += depoAmount;
+		return balance;
+	}
+	double withdrawAmount(double wdamount)
+	{
+		balance -= wdamount;
+		return balance;
+	}
+};
+
+class checkingAccount : bankAccount
+{
+	double minBalance;
+	double interest;
+	double serviceCharge;
+public:
+	checkingAccount(int accnum1, double amount1, double interest1) : bankAccount(accnum1, amount1)
+	{
+		interest = interest1;
+		minBalance = 0;
+	};
+	void setInterestRate(double intrate)
+	{
+		interest = intrate;
+	}
+	double retrieveIntRate()
+	{
+		return interest;
+	}
+	void setMinBalance(int minbal)
+	{
+		minBalance = minbal;
+	}
+	double retrieveminBalance()
+	{
+		return minBalance;
+	}
+	void setServiceCharges(double scharge)
+	{
+		serviceCharge = scharge;
+	}
+	double retriServiceCharge()
+	{
+		return serviceCharge;
+	}
+	double depoAmount(double depoAmount)
+	{
+		balance += depoAmount;
+		return balance;
+	}
+	double withdrawAmount(double wdamount)
+	{
+		if (check())
+			balance -= wdamount;
+		else
+			cout << "You have an insufficient balance";
+		return balance;
+	}
+	bool check() {
+		if (balance < minBalance)
+			return 0;
+		else
+			return 1;
+	}
+	void showAccInfo()
+	{
+		cout << "Your account number : " << accNumber << endl;
+		cout << "Your account balance : " << balance << "\n";
+	}
+
+};
+
+class savingsAccount : bankAccount
+{
+	double minBalance;
+public:
+	savingsAccount(int accnum1, double amount1) : bankAccount(accnum1, amount1)
+	{
+		minBalance = 0;
+	};
+	double depoAmount(double depoAmount)
+	{
+		balance += depoAmount;
+		return balance;
+	}
+
+	double withdrawAmount(double wdamount)
+	{
+		if (check())
+			balance -= wdamount;
+		else
+			cout << "You have an insufficient balance";
+		return balance;
+	}
+	bool check() {
+		if (balance < minBalance)
+			return 0;
+		else
+			return 1;
+	}
+	void showAccInfo()
+	{
+		cout << "Your account number : " << accNumber << endl;
+		cout << "Your account balance : " << balance << "\n";
+	}
+};
+
+int main()
+{
+	double amount;
+	int choice;
+	do {
+		cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+		cout << "Create an account" << endl;
+		cout << "1 Checking Account " << "\n";
+		cout << "2 Savings Account" << "\n";
+		cout << "3 Exit" << "\n";
+		cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+		cout << "Your choice : ";
+		cin >> choice;
+
+		if (choice == 1)
+		{
+			cout << "Enter account number : ";
+			int accnum;
+			cin >> accnum;
+			cout << "Enter opening balance : ";
+			double opbalance;
+			cin >> opbalance;
+			double intrate;
+			cout << "Enter interest rate : ";
+			cin >> intrate;
+			checkingAccount acc(accnum, opbalance,intrate);
+			int ch;
+			do {
+				cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+				cout << "1 Deposit" << "\n" << "2 Withdraw" << "\n" <<
+					"3 Account Info" << "\n4 Exit\n";
+				cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+				cout << "Your choice : " ;
+				cin >> ch;
+				switch (ch)
+				{
+				case 1:
+					cout << "Enter deposit amount : ";
+					cin >> amount;
+					double depamount;
+					depamount = acc.depoAmount(amount);
+					cout << "Balance : " << depamount << endl;;
+					break;
+				case 2:
+					cout << "Enter withdraw amount : ";
+					cin >> amount;
+					double wamount;
+					wamount = acc.withdrawAmount(amount);
+					cout << "Balance : " << wamount << endl;
+					break;
+				case 3:
+					acc.showAccInfo();
+					break;
+				}
+			} while (ch != 4);
+		}
+		else if (choice == 2) {
+			cout << "Enter account number : ";
+			int accnum1;
+			cin >> accnum1;
+			cout << "Enter opening balance : ";
+			double opbalance1;
+			cin >> opbalance1;
+			cout << "Enter interest rate : ";
+			double intrate1;
+			cin >> intrate1;
+			savingsAccount acc1(accnum1,opbalance1);
+			int ch1;
+			do {
+				cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+				cout << "1 Deposit" << "\n" << "2 Withdraw" << "\n" <<
+					"3 Account Info" << "\n4 Exit\n";
+				cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+				cout << "Your choice : ";
+				cin >> ch1;
+				switch (ch1)
+				{
+				case 1:
+					cout << "Enter deposit amount : ";
+					cin >> amount;
+					double depamount;
+					depamount = acc1.depoAmount(amount);
+					cout << "Balance : " << depamount << endl ;
+					break;
+				case 2:
+					cout << "Enter withdraw amount : ";
+					cin >> amount;
+					double wamount;
+					wamount = acc1.withdrawAmount(amount);
+					cout << "Balance : " << wamount << endl;
+					break;
+				case 3:
+					acc1.showAccInfo();
+					cout << "\n";
+					break;
+				case 4:
+					break;
+				default:
+					cout << "invalid choice";
+					break;
+				}
+			} while (ch1 < 4);
+		}
+	} while (choice < 3);
+}
