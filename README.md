@@ -1,2 +1,2 @@
 # Tugas-Progdas
-DL 25/10/2022
+all progdas assignments
