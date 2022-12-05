@@ -1,0 +1,98 @@
+Soal: Buatlah sebuah program menggunakan Bahasa C++ untuk melakukan tugas berikut:
+
+Membaca sebuah file “input.txt”. File ini berisi kalimat yang tersusun dari banyak kata-kata.
+
+Hitunglah jumlah masing-masing kata yang ada dalam file tersebut. Buatlah histogram untuk setiap kata yang ada.
+
+Hasil histogram dituliskan dalam sebuah file “output.json”. Kata diperlalukan case insensitive.
+
+
+Contoh:
+
+File input.txt
+Saya sedang makan. Saya akan kuliah. Kuliah di DTETI.
+
+
+File output.json
+
+{
+“saya”: 2,
+“sedang”: 1,
+“makan”: 1,
+“akan”: 1,
+“kuliah”: 2,
+“di”: 1,
+“dteti”: 1
+
+}
+
+Jawaban :
+
+#include<iostream>
+#include<fstream>
+#include<map>
+#include<string>
+#include<sstream>
+#include<algorithm>
+typedef std::map<std::string, int>StringIntMap;
+using namespace std;
+
+void jumlahkata(istream& input, StringIntMap& words) {
+	string text;
+	
+	while (input >> text) {
+		++words[text];
+	}
+	
+	
+}
+int main() {
+	ifstream file;
+	file.open("test.txt"); //file name
+
+	if (file.fail())
+	{
+		cout << "File failed to open." << endl;
+		return 1;
+	}
+
+	stringstream string1;
+	string1 << file.rdbuf(); //return a pointer associated with the file to string1
+	string file_contents;
+	file_contents = string1.str();
+	
+	for (int i = 0, len = file_contents.size(); i < len; i++)
+	{
+		// check whether parsing character is punctuation or not
+		if (ispunct(file_contents[i]))
+		{
+			file_contents.erase(i--, 1);
+			len = file_contents.size();
+		}
+	}
+	
+	transform(file_contents.begin(), file_contents.end(), file_contents.begin(), ::tolower);
+
+
+	fstream file1;
+	file1.open("test1.txt", ios::out);//write
+	if (file1.is_open()) {
+		file1 << file_contents;
+		file1.close();
+	}
+		
+	ifstream input("test1.txt");
+		
+	StringIntMap words_map;
+
+	jumlahkata(input, words_map);
+	fstream file2;
+	file2.open("output.json", ios::out);
+	if (file2.is_open()) {
+		for (StringIntMap::iterator ctr = words_map.begin();
+			ctr != words_map.end(); ++ctr) {
+			file2 << ctr->first << " muncul " << ctr->second << " kali" << endl;
+
+		}
+	}
+}
